@@ -16,7 +16,7 @@ const categoryroute = require("./route/categoryroute");
 const productroute = require("./route/productroute");
 const visitRoute = require("./route/visitorRoute");
 const feedroute = require("./route//feedbackroute");
-const cartitemroute = require("./route/cartitemroute");
+const ecartitemroute = require("./route/ecartroute");
 
 
 // Utilizing the app
@@ -39,7 +39,7 @@ app.use("/api/category", categoryroute);
 app.use("/api/product", productroute);
 app.use("/api/visitor", visitRoute);
 app.use("/api/feedback", feedroute);
-app.use("/api/cart", cartitemroute);
+app.use("/api/cart", ecartitemroute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on these server`, 404))

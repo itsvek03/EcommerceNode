@@ -17,7 +17,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 // Creating the Items
 exports.InsertCardItem = catchAsync(async (req, res, next) => {
-    let { cart } = req.body;
+    //let { cart } = req.body;
     if (!req.body.UserEmail) {
         req.body.UserEmail = req.user.id
     }
