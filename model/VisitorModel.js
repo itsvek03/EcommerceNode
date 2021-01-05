@@ -69,7 +69,19 @@ const VisitorSchema = new mongoose.Schema({
   passwordTokenExpires: {
     type: Date,
   },
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
+
+
+
+// Adding Virtual populate of visitor
+VisitorSchema.virtual('CartItems', {
+  ref: 'carts',
+  foreignField: 'user',
+  localField: '_id'
+})
 
 // Encrypt the password before inserting the document
 VisitorSchema.pre("save", async function (next) {

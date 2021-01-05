@@ -53,9 +53,37 @@ const ProductSchema = new mongooose.Schema({
       ref: "subcategories",
     },
   ],
-});
+  // Review: [
+  //   {
+  //     type: mongooose.Schema.Types.ObjectId,
+  //     ref: 'reviews',
+  //   }
+  // ]
+},
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  });
+
+
+// ProductSchema.pre(/^find/, function (next) {
+//   this.populate(
+//     {
+//       path: 'review',
+//       select: 'review rating'
+//     }
+//   )
+//   next();
+// })
+
+// Virtual populate 
+ProductSchema.virtual('review', {
+  ref: 'reviews',
+  foreignField: 'product',
+  localField: '_id'
+})
 
 // Creating the model
 const productModel = mongooose.model("products", ProductSchema);
 
-module.exports = { productModel, ProductSchema };
+module.exports = productModel;

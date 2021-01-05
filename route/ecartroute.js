@@ -1,10 +1,13 @@
-const EcartItemController = require("../controller/EcartController")
-const visitorauthcontroller = require("../controller/visitorAuthController")
-const express = require("express");
-const ecartitemroute = express.Router();
+const EcartController = require('../controller/ecartController')
+const visitorAuthController = require('../controller/visitorAuthController');
+const express = require('express')
+const ecartrouter = express.Router({ mergeParams: true });
 
-ecartitemroute
-    .route("/")
-    .post(visitorauthcontroller.protectTo, EcartItemController.InsertCartItems)
+ecartrouter
+    .route('/')
+    .post(visitorAuthController.protectTo,
+        visitorAuthController.restrictTo('Visitor'),
+        EcartController.postECart)
+    .get(EcartController.getCartUser)
 
-module.exports = ecartitemroute
+module.exports = ecartrouter

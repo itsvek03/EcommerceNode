@@ -3,6 +3,10 @@ const express = require("express");
 const visitrouter = express.Router();
 const VisitorAuthController = require("../controller/visitorAuthController");
 const VisitorController = require("../controller/VisitorController");
+const erouter = require("../route/ecartroute");
+
+// Merge the property
+visitrouter.use('/:userid/ecart', erouter);
 
 visitrouter
     .route("/signup")

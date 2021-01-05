@@ -39,7 +39,7 @@ const uploads = multer({
 // Making the function
 exports.postProduct = [uploads.single("PImage"), catchAsync(async (req, res) => {
     if (1) {
-        const p = new Product.productModel({
+        const p = new Product({
             PName: req.body.PName,
             Description: req.body.Description,
             Price: req.body.Price,
@@ -64,7 +64,7 @@ exports.postProduct = [uploads.single("PImage"), catchAsync(async (req, res) => 
 
 // Get Product 
 exports.getProduct = catchAsync(async (req, res, next) => {
-    const data = await Product.productModel.find();
+    const data = await Product.find();
     res.status(200).json({
         message: "Successfully",
         data: data.length,
@@ -74,7 +74,7 @@ exports.getProduct = catchAsync(async (req, res, next) => {
 
 // Get Product By Id
 exports.getProductById = catchAsync(async (req, res, next) => {
-    const data = await Product.productModel.findById(req.params.id);
+    const data = await Product.findById(req.params.id).populate('SubCategory Category review');
     if (!data) {
         return next(new AppError("Product Id is not valid", 400));
     }
@@ -88,7 +88,7 @@ exports.getProductById = catchAsync(async (req, res, next) => {
 // Delete
 
 exports.deleteById = catchAsync(async (req, res, next) => {
-    const data = await Product.productModel.findByIdAndDelete(req.params.id);
+    const data = await Product.findByIdAndDelete(req.params.id);
     if (!data) {
         return next(new AppError("Product Id is not valid", 400));
     }
@@ -118,7 +118,7 @@ exports.updateProduct = [uploads.single("PImage"), catchAsync(async (req, res, n
             Quantity: req.body.Quantity
         };
     }
-    const updata = await Product.productModel.findByIdAndUpdate(req.params.id, dataRecord, {
+    const updata = await Product.findByIdAndUpdate(req.params.id, dataRecord, {
         new: true,
         runValidators: true
     });

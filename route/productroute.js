@@ -1,19 +1,18 @@
 const express = require('express');
 const productcontroller = require('../controller/productController');
-const authController = require('../controller/visitorAuthController');
-const cartrouter = require('../route/cartitemroute')
-const cartcontroller = require('../controller/cartController')
+const reviewroute = require('../route/reviewroute')
 const router = express.Router();
 
 // router
-//      .route('/:productId/cart')
+//      .route('/:productId/reviews')
 //      .post(
-//           authController.protectTo,
-//           authController.restrictTo('Visitor'),
-//           cartcontroller.GetCardItemById
+//           visitorAuthController.protectTo,
+//           visitorAuthController.restrictTo('Visitor'),
+//           reviewController.postReview
 //      )
 
-router.use('/:productId/carts', cartrouter)
+// it is in the mounted way
+router.use('/:productId/review', reviewroute)
 
 router.route('/')
      .post(productcontroller.postProduct)

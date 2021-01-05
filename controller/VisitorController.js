@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 // Get the Users
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const users = await VisitorModel.find();
+    const users = await VisitorModel.find().populate('CartItems');
     // SEND RESPONSE
     res.status(200).json({
         status: 'success',

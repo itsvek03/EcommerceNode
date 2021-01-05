@@ -8,6 +8,7 @@ const globalHandleError = require("./controller/errorController")
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
+
 let config = require("config");
 
 // Importing the route file
@@ -16,7 +17,9 @@ const categoryroute = require("./route/categoryroute");
 const productroute = require("./route/productroute");
 const visitRoute = require("./route/visitorRoute");
 const feedroute = require("./route//feedbackroute");
-const ecartitemroute = require("./route/ecartroute");
+const reviewroute = require("./route/reviewroute");
+const ecartroute = require("./route/ecartroute")
+
 
 
 // Utilizing the app
@@ -39,7 +42,8 @@ app.use("/api/category", categoryroute);
 app.use("/api/product", productroute);
 app.use("/api/visitor", visitRoute);
 app.use("/api/feedback", feedroute);
-app.use("/api/cart", ecartitemroute);
+app.use("/api/review", reviewroute);
+app.use("/api/ecart", ecartroute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on these server`, 404))
