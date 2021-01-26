@@ -5,10 +5,27 @@ let helmet = require("helmet");
 let morgan = require("morgan");
 const AppError = require("./utils/AppError")
 const globalHandleError = require("./controller/errorController")
+const cors = require("cors");
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
+//app.options('*', cors())
 
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization");
+//   res.header('Access-Control-Allow-Methods', 'PUT,POST,DELETE,PATCH,GET,OPTIONS');
+//   next();
+// })
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept,Authorization"
+  );
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE,OPTIONS');
+  next();
+});
 let config = require("config");
 
 // Importing the route file

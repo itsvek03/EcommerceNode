@@ -58,7 +58,6 @@ const VisitorSchema = new mongoose.Schema({
   },
   termsAccepted: {
     type: Boolean,
-    default: false,
   },
   PasswordUpdatedDate: {
     type: Date,

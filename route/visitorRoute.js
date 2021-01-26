@@ -3,10 +3,15 @@ const express = require("express");
 const visitrouter = express.Router();
 const VisitorAuthController = require("../controller/visitorAuthController");
 const VisitorController = require("../controller/VisitorController");
+const ecartController = require("../controller/ecartController")
 const erouter = require("../route/ecartroute");
 
 // Merge the property
 visitrouter.use('/:userid/ecart', erouter);
+
+
+
+
 
 visitrouter
     .route("/signup")
@@ -35,6 +40,11 @@ visitrouter
 visitrouter
     .route("/deleteMe")
     .delete(VisitorAuthController.protectTo, VisitorController.deleteMe)
+
+visitrouter
+    .route("/me")
+    .get(VisitorAuthController.protectTo, VisitorController.getMe)
+
 
 visitrouter
     .route("/updateMe")

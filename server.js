@@ -1,7 +1,9 @@
 // Importing the file
 const app = require("./index");
 require("./db/connection");
+//var cors = require("cors");
 
+//app.use(cors())
 // Const variable for port
 const port = process.env.PORT || 8900;
 

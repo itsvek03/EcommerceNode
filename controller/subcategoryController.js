@@ -10,9 +10,7 @@ exports.postsubCategory = catchAsync(async (req, res, next) => {
     const psub = await subModel.create(req.body);
     res.status(200).json({
       status: "Successfully",
-      data: {
-        newdata: psub,
-      },
+      data: psub
     });
   } else {
     next(new AppError("Insertion Failed", 401));

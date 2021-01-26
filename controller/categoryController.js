@@ -10,14 +10,12 @@ exports.postCategory = catchAsync(async (req, res, next) => {
   if (1) {
     const cat = new Category({
       cname: req.body.cname,
-      SubId: req.body.SubId,
     });
     const newdata = await cat.save();
     res.status(200).json({
       status: "Success",
-      data: {
-        n: newdata,
-      },
+      data: newdata,
+
     });
   } else {
     next(new AppError("Insertion Failed", 401));
@@ -26,27 +24,27 @@ exports.postCategory = catchAsync(async (req, res, next) => {
 
 //get by reference
 exports.getCategory = catchAsync(async (req, res, next) => {
-  const getdata = await Category.find().populate("SubId");
+  const getdata = await Category.find();
   res.status(200).json({
     status: "Success",
     length: getdata.length,
-    data: { getdata },
+    data: getdata,
   });
   // for one to many relationships
-  for (var i in getdata) {
-    console.log(getdata[i]);
-  }
+  // for (var i in getdata) {
+  //   console.log(getdata[i]);
+  // }
 });
 
 // Get By ID
 exports.getCategoryID = catchAsync(async (req, res, next) => {
-  const getData = await Category.findById(req.params.id).populate("SubId");
+  const getData = await Category.findById(req.params.id);
   if (!getData) {
     return next(new AppError("Id is not present", 404));
   }
   res.status(200).json({
     status: "Success",
-    data: { getData },
+    data: getData,
   });
 });
 
@@ -58,7 +56,7 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({
     status: "Deleted Successfully",
-    data: { cid },
+    data: cid,
   });
 });
 
@@ -73,6 +71,6 @@ exports.UpdateCategory = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({
     status: "Updated Successfully",
-    data: { cid },
+    data: cid,
   });
 });

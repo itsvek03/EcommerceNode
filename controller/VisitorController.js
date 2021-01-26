@@ -25,6 +25,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 
+exports.getMe = catchAsync(async (req, res, next) => {
+    const data = await VisitorModel.findById(req.user.id);
+    return res.status(200).json({
+        status: 'success',
+        data: data
+    });
+})
+
 //Update the Users
 exports.UpdateMe = catchAsync(async (req, res, next) => {
 

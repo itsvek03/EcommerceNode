@@ -14,7 +14,7 @@ const ProductSchema = new mongooose.Schema({
     type: String,
     trim: true,
     minlength: 5,
-    maxlength: 100,
+    maxlength: 500,
     required: true,
   },
   Price: {
@@ -40,6 +40,14 @@ const ProductSchema = new mongooose.Schema({
   isAvailable: {
     type: Boolean,
     default: true
+  },
+  ratingsQuantity: {
+    type: Number,
+    default: 0,
+  },
+  ratingsAverage: {
+    type: Number,
+    default: 4.5,
   },
   Category: [
     {

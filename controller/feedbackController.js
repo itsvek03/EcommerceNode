@@ -21,9 +21,9 @@ exports.postFeedBack = catchAsync(async (req, res, next) => {
 // Get Feedback
 exports.getFeedBack = catchAsync(async (req, res, next) => {
   const getfeed = await FeedBackModel.find();
-  res.status(200).json({
+  return res.status(200).json({
     status: "Successfully",
-    data: { getfeed },
+    data: getfeed,
   });
   next();
 });
@@ -35,6 +35,6 @@ exports.deleteFeedBack = catchAsync(async (req, res) => {
   }
   res.status(200).json({
     status: "Deleted Successfully",
-    data: { del },
+    data: del,
   });
 });

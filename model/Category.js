@@ -10,12 +10,6 @@ const CategorySchema = new mongooose.Schema({
     trim: true,
     minlength: [3, "Name should be more than 3 characters"],
   },
-  SubId: [
-    {
-      type: mongooose.Schema.Types.ObjectId,
-      ref: "subcategories",
-    },
-  ],
 });
 
 // Creating the model

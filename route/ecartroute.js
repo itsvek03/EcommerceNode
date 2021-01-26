@@ -5,9 +5,10 @@ const ecartrouter = express.Router({ mergeParams: true });
 
 ecartrouter
     .route('/')
-    .post(visitorAuthController.protectTo,
-        visitorAuthController.restrictTo('Visitor'),
-        EcartController.postECart)
     .get(EcartController.getCartUser)
+
+ecartrouter.route('/:productId').post(visitorAuthController.protectTo,
+    visitorAuthController.restrictTo('Visitor'),
+    EcartController.postECart)
 
 module.exports = ecartrouter

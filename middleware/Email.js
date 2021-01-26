@@ -18,7 +18,9 @@ const sendEmail = async (options) => {
     from: "Vivek Maurya <faq03031999@gmail.com>",
     to: options.Email,
     subject: options.subject,
-    text: options.message, // plain text body
+    html: `You are requested for password reset
+      Click <a href="http://localhost:3000/resetPassword/${options.message}">here</a> to reset the password`,
+    //text: options.message, // plain text body
   };
 
   await transport.sendMail(sendEmail);

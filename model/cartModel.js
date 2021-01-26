@@ -1,22 +1,8 @@
 // review / rating / createdAt / ref to tour / ref to user
 const mongoose = require('mongoose');
+const Product = require('../model/Product')
 const CartSchema = new mongoose.Schema(
     {
-        ProductId: [{
-            type: mongoose.Schema.ObjectId,
-            ref: 'products',
-            required: [true, 'Review must belong to a Product.']
-        }],
-        count: [{
-            type: Number,
-            default: 0
-        }],
-        totalCartItems: {
-            type: Number,
-        },
-        totalPrice: {
-            type: Number,
-        },
         user: {
             type: mongoose.Schema.ObjectId,
             ref: 'visitors',
@@ -26,6 +12,18 @@ const CartSchema = new mongoose.Schema(
             type: Date,
             default: Date.now
         },
+        ProductId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'products',
+            required: [true, 'Review must belong to a Product.']
+        },
+        Quantity: {
+            type: Number,
+            defualt: [1, "Quantity must be greater than 0"]
+        },
+        AvailableQuantity: {
+            type: Number,
+        }
     },
     {
         toJSON: { virtuals: true },
@@ -41,6 +39,44 @@ CartSchema.pre(/^find/, function (next) {
     })
     next();
 })
+
+// Create the avg rating
+CartSchema.statics.calculateQuantity = async function (productId) {
+    const stats = await this.aggregate([
+        {
+            $match: { ProductId: productId }
+        },
+        {
+            $project: {
+                _id: '$ProductId',
+                nQuantity: { $subtract: ["$AvailableQuantity", "$Quantity"] },
+            }
+        }
+    ])
+    console.log(stats);
+
+    await Product.findByIdAndUpdate(productId, {
+        Quantity: stats[stats.length - 1].nQuantity
+    });
+}
+
+CartSchema.post('save', function () {
+    this.constructor.calculateQuantity(this.ProductId)
+})
+
+// findByIdAndUpdate
+// findByIdAndDelete
+CartSchema.pre(/^findOneAnd/, async function (next) {
+    this.r = await this.findOne();
+    console.log("Update", this.r);
+    next();
+});
+
+CartSchema.post(/^findOneAnd/, async function () {
+    // await this.findOne(); does NOT work here, query has already executed
+    await this.r.constructor.calculateQuantity(this.r.ProductId);
+});
+
 
 const CartModel = mongoose.model('carts', CartSchema);
 

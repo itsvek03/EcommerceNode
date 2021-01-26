@@ -40,6 +40,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     Password: req.body.Password,
     ConfirmPassword: req.body.ConfirmPassword,
     role: req.body.role,
+    termsAccepted: req.body.termsAccepted
   });
   let token = signInToken(user._id);
   CreateSendToken(user, 200, res, "Signup Successfully");
@@ -139,7 +140,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   //Send the Email to users
   const reseturl = `${req.protocol}://${req.get("host")}/api/visitor/resetPassword/${resetToken}`;
   console.log(reseturl)
-  const message = `Forgot password ? ${reseturl}`;
+  const message = `${resetToken}`;
   console.log(message);
 
   try {

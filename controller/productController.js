@@ -3,7 +3,46 @@ const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 const Product = require("../model/Product");
 const multer = require("multer");
+const APIfeatures = require("../utils/apiFeatures");
+const subModel = require("../model/SubCategory");
 let port = "http://localhost:8900";
+
+
+
+
+//Making alias for any top 5 cheap prices 
+/**
+   api/tour/top5cheap
+
+   we are making top5cheap as router
+
+   there are many stuff is to be used so we 
+   have to used the middleware before accessing the getAlltour function
+
+
+   exports.aliasTopTours = (req, res, next) => {
+    req.query.limit = '5';
+    req.query.sort = '-ratingAverage,price';
+    req.query.fields = 'name,price';
+    next();
+  };
+
+
+
+ */
+// exports.aliasTopTours = (req, res, next) => {
+//     req.query.limit = '5';
+//     req.query.sort = '-ratingAverage,price';
+//     req.query.fields = 'name,price';
+//     next();
+// };
+
+
+
+
+
+
+
 
 // Storing the image in the folder
 const storage = multer.diskStorage({
@@ -49,6 +88,8 @@ exports.postProduct = [uploads.single("PImage"), catchAsync(async (req, res) => 
             isAvailable: req.body.isAvailable,
             Category: req.body.Category,
             SubCategory: req.body.SubCategory,
+            ratingsQuantity: req.body.ratingsQuantity,
+            ratingsAverage: req.body.ratingsAverage
         });
         const dp = await p.save();
         res.status(200).json({
@@ -62,9 +103,30 @@ exports.postProduct = [uploads.single("PImage"), catchAsync(async (req, res) => 
 ];
 
 
+// Paginate === localhost: 8900 / api / product ? page = 1 & limit=6
+
+
+// LimitFields === localhost:8900/api/product?limit=3
+
+
+// sort ======= localhost:8900/api/product?sort=Price
+
+
+// sort&paginate ==== localhost:8900/api/product?sort=Price,page = 1&limit=6
+
+
+// Filter ===== localhost: 8900 / api / product ? Price[lt] = 10000
+// (can be used for Price slider)
+
+
 // Get Product 
 exports.getProduct = catchAsync(async (req, res, next) => {
-    const data = await Product.find();
+    const fdata = new APIfeatures(Product.find(), req.query)
+        .paginate()
+        .limitFields()
+        .sort()
+        .filter();
+    const data = await fdata.query.populate('SubCategory Category');
     res.status(200).json({
         message: "Successfully",
         data: data.length,
@@ -103,10 +165,10 @@ exports.deleteById = catchAsync(async (req, res, next) => {
 exports.updateProduct = [uploads.single("PImage"), catchAsync(async (req, res, next) => {
     if (req.file) {
         var dataRecord = {
-            PName: req.body.PName,
-            Description: req.body.Description,
-            Price: req.body.Price,
-            Quantity: req.body.Quantity,
+            //PName: req.body.PName,
+            //Description: req.body.Description,
+            //Price: req.body.Price,
+            //Quantity: req.body.Quantity,
             PImage: port + "/uploads/" + req.file.filename
         };
     }
