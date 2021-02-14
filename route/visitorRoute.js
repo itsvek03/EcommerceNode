@@ -6,13 +6,9 @@ const VisitorController = require("../controller/VisitorController");
 const ecartController = require("../controller/ecartController")
 const erouter = require("../route/ecartroute");
 
+
 // Merge the property
 visitrouter.use('/:userid/ecart', erouter);
-
-
-
-
-
 visitrouter
     .route("/signup")
     .post(VisitorAuthController.signup);
